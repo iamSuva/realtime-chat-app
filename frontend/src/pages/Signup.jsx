@@ -1,11 +1,11 @@
-// import { Link } from "react-router-dom";
+ import { Link } from "react-router-dom";
 import GenderCheckbox from "./GenderCheckBox";
 import { useState } from "react";
-// import useSignup from "../../hooks/useSignup";
+import signupHooks from "../hooks/signupHooks";
 
 const SignUp = () => {
 	const [inputs, setInputs] = useState({
-		fullName: "",
+		fullname: "",
 		username: "",
 		password: "",
 		confirmPassword: "",
@@ -17,10 +17,12 @@ const SignUp = () => {
 	const handleCheckboxChange = (gender) => {
 		setInputs({ ...inputs, gender });
 	};
-
+ const {loading,signup}=signupHooks();
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// await signup(inputs);
+		console.log(inputs);
+
+		 await signup(inputs);
 	};
 
 	return (
@@ -39,8 +41,8 @@ const SignUp = () => {
 							type='text'
 							placeholder='John Doe'
 							className='w-full input input-bordered  h-10'
-							value={inputs.fullName}
-							onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
+							value={inputs.fullname}
+							onChange={(e) => setInputs({ ...inputs, fullname: e.target.value })}
 						/>
 					</div>
 
@@ -85,19 +87,19 @@ const SignUp = () => {
 
 					<GenderCheckbox onCheckboxChange={handleCheckboxChange} selectedGender={inputs.gender} />
 
-					{/* <Link
-						to={"/login"}
+
+					<div>
+						<button className='btn btn-block btn-sm mt-2 border border-slate-700' >
+						Sign Up
+						</button>
+					</div>
+					<Link
+						to="/login"
 						className='text-sm hover:underline hover:text-blue-600 mt-2 inline-block'
 						href='#'
 					>
 						Already have an account?
-					</Link> */}
-
-					<div>
-						{/* <button className='btn btn-block btn-sm mt-2 border border-slate-700' disabled={loading}>
-							{loading ? <span className='loading loading-spinner'></span> : "Sign Up"}
-						</button> */}
-					</div>
+					</Link>
 				</form>
 			</div>
 		</div>

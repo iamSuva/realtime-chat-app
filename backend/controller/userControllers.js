@@ -60,12 +60,12 @@ const handleSignup=async(req,res)=>{
 }
 
 const handleLogin=async(req,res)=>{
-    console.log("Login user");
-
+    
     try {
         const {username,password}=req.body;
         const user=await userModel.findOne({username});
-       console.log(user);
+        
+        console.log("Login user ",user);
         if(!user)
         {
             return res.status(400).json({error:"Invalid username"});

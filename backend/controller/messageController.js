@@ -1,5 +1,6 @@
 const conversationModel = require("../models/conversationModel");
 const messageModel = require("../models/messageModel");
+const {getReceiverSocketId, io} = require("../socket/socketio");
 
 
  const sendMessage=async(req,res)=>{
@@ -31,11 +32,19 @@ const messageModel = require("../models/messageModel");
  }
 
 
- //socket io will be added here
  await conversation.save();
  await newMessage.save();
  //both will run parallel
-//  await Promise.all([conversation.save(),newMessage.save()]);
+ //  await Promise.all([conversation.save(),newMessage.save()]);
+ //socket io will be added here
+ const reciverSocketId=getReceiverSocketId(receiverId);
+ if(reciverSocketId){
+  
+  //this is used to send event to specefic client
+  io.to(reciverSocketId).emit("newMessage",newMessage)
+ }
+
+
  //return the message
  res.status(201).json(newMessage);
 
@@ -54,7 +63,8 @@ const getMessagesOfTwo=async(req,res)=>{
         }).populate("messages");
       if(!conversation)
       {
-        res.status(404).json({message:"No conversation found"});
+        //res.status(404).json({message:"No conversation found"});
+      return res.status(200).json([]);
       }
       res.status(200).json(conversation.messages);
 
